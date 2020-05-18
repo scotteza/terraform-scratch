@@ -6,7 +6,7 @@ To pull source code from Github, you will need to create an OAuth token to allow
 Add this to the .tfvars file:
 
 ```shell script
-    github_oauth_token = "abc123"
+github_oauth_token = "abc123"
 ```
 
 Run Terraform with the variables file:
