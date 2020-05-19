@@ -316,6 +316,7 @@ resource "aws_codebuild_project" "lint" {
 
   source {
     type = "CODEPIPELINE"
+    buildspec = "buildspec.lint.yml"
   }
 
   tags = {
