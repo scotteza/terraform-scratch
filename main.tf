@@ -12,41 +12,7 @@ provider "tls" {
   version = "> 2.1"
 }
 
-provider "null" {
-  version = "~> 2.1"
-}
-
-provider "aws" {
-  version = "~> 2.52"
-}
-
-provider "local" {
-  version = "~> 1.4"
-}
-
 data "aws_caller_identity" "current" {}
-
-module "label" {
-  source  = "cloudposse/label/null"
-  version = "0.16.0"
-
-  namespace = "pttp"
-  stage     = terraform.workspace
-  name      = "pttp"
-  delimiter = "-"
-
-  tags = {
-    "business-unit" = "MOJ"
-    "application"   = "PTTP",
-    "is-production" = "false",
-    "owner"         = "pttp@madetech.com"
-
-    "region"           = data.aws_region.current_region.id
-    "environment-name" = terraform.workspace
-    "source-code"      = "tbc"
-  }
-}
-
 data "aws_region" "current_region" {}
 
 module "dynamic_subnets" {
@@ -67,6 +33,8 @@ module "vpc" {
   stage      = "dev"
   name       = "pttp"
   cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = false
+  enable_dns_support = false
 }
 
 module "build" {
