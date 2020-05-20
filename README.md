@@ -1,13 +1,15 @@
 # PTTP CI / CD 
 
-This repository holds the Terraform code to create a [https://aws.amazon.com/codebuild/](CodeBuild) / [https://aws.amazon.com/codepipeline/](CodePipeline) service in AWS.
+This repository holds the Terraform code to create a [CodeBuild](https://aws.amazon.com/codebuild/) / [CodePipeline](https://aws.amazon.com/codepipeline/) service in AWS.
 
 ## How to use this repo
 
 The source code in this repository is provided only as a reference.
-Please speak to someone on the PTTP team to get a pipeline set up for you.
+Please speak to someone on the PTTP team to get a pipeline set up.
 
-This pipeline will be integrated with a Github repository, and build your project according to your [https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html](buildspec) files.
+This pipeline will be integrated with a Github repository, and build your project according to your [buildspec](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html) files.
+
+Depending on your build process, you may require 3 files to do linting, testing and deployment.
 
 ### Linting
 
@@ -46,10 +48,10 @@ example:
 ```yaml
 version: 0.2
 
-#env:
-#  variables:
-#    key: "value"
-#    key: "value"
+env:
+  variables:
+    key: "value"
+    key: "value"
 
 phases:
   install:
@@ -66,7 +68,7 @@ phases:
 
 ## To create your own Pipeline
 
-For experimenting with AWS CodePipeline / CodeBuild, you can execute the Terrafom in this repository.
+For experimenting with AWS CodePipeline / CodeBuild, you can execute the Terraform in this repository.
 
 An OAuth token is required to pull your source code from Github.
 
