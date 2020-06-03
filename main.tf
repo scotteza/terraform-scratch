@@ -8,6 +8,10 @@ terraform {
   }
 }
 
+provider "tls" {
+  version = "> 2.1"
+}
+
 data "aws_region" "current_region" {}
 
 module "dynamic_subnets" {
@@ -20,7 +24,7 @@ module "dynamic_subnets" {
   igw_id                  = module.vpc.igw_id
   cidr_block              = "10.0.0.0/16"
   map_public_ip_on_launch = false
-  nat_gateway_enabled     = false
+  nat_gateway_enabled     = true
 }
 
 module "vpc" {
@@ -29,13 +33,32 @@ module "vpc" {
   stage                = "dev"
   name                 = "pttp"
   cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = false
-  enable_dns_support   = false
+  enable_dns_hostnames = true
+  enable_dns_support   = true
 }
 
-module "build" {
-  source = "./modules/pipeline"
+//module "build" {
+//  source = "./modules/pipeline"
+//  vpc_id = module.vpc.vpc_id
+//  subnet_ids = module.dynamic_subnets.public_subnet_ids
+//  github_oauth_token = var.github_oauth_token
+//}
+
+//module "ecs-spike" {
+//  source = "./modules/ecs-spike"
+//  vpc_id = module.vpc.vpc_id
+//  subnet_ids = module.dynamic_subnets.public_subnet_ids
+//}
+
+module "beats" {
+  source = "./modules/beats"
   vpc_id = module.vpc.vpc_id
   subnet_ids = module.dynamic_subnets.public_subnet_ids
-  github_oauth_token = var.github_oauth_token
 }
+
+//module "monitoring-platform" {
+//  source = "./modules/monitoring-platform"
+//  vpc_id = module.vpc.vpc_id
+//  backend-min-size = 1
+//  subnet_ids = module.dynamic_subnets.public_subnet_ids
+//}
