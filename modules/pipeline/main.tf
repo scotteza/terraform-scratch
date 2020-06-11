@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "artifacts" {
-  bucket = "pttp-test-bucket"
-  acl    = "private"
+  bucket        = "pttp-test-bucket"
+  acl           = "private"
   force_destroy = true
 
   server_side_encryption_configuration {
@@ -14,8 +14,8 @@ resource "aws_s3_bucket" "artifacts" {
 }
 
 resource "aws_s3_bucket" "tf-state" {
-  bucket = "pttp-client-tf-state"
-  acl    = "private"
+  bucket        = "pttp-client-tf-state"
+  acl           = "private"
   force_destroy = true
 }
 
@@ -115,10 +115,10 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        OAuthToken = var.github_oauth_token
-        Owner  = "emileswarts"
-        Repo   = "terraform-mvp"
-        Branch = "master"
+        OAuthToken           = var.github_oauth_token
+        Owner                = "emileswarts"
+        Repo                 = "terraform-mvp"
+        Branch               = "master"
         PollForSourceChanges = "true"
       }
     }
@@ -128,12 +128,12 @@ resource "aws_codepipeline" "codepipeline" {
     name = "Lint"
 
     action {
-      name             = "Lint"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      input_artifacts  = ["source_output"]
-      version          = "1"
+      name            = "Lint"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["source_output"]
+      version         = "1"
 
       configuration = {
         ProjectName = aws_codebuild_project.lint.name
@@ -145,12 +145,12 @@ resource "aws_codepipeline" "codepipeline" {
     name = "Staging"
 
     action {
-      name             = "Deploy"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      input_artifacts  = ["source_output"]
-      version          = "1"
+      name            = "Deploy"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["source_output"]
+      version         = "1"
 
       configuration = {
         ProjectName = aws_codebuild_project.staging.name
@@ -163,11 +163,11 @@ resource "aws_codepipeline" "codepipeline" {
     name = "Production"
 
     action {
-      name            = "Approve"
-      owner           = "AWS"
-      category        = "Approval"
-      provider        = "Manual"
-      version         = "1"
+      name     = "Approve"
+      owner    = "AWS"
+      category = "Approval"
+      provider = "Manual"
+      version  = "1"
 
       configuration = {
         CustomData = "Deploy to Production?"
@@ -176,12 +176,12 @@ resource "aws_codepipeline" "codepipeline" {
     }
 
     action {
-      name             = "Deploy"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      input_artifacts  = ["source_output"]
-      version          = "1"
+      name            = "Deploy"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["source_output"]
+      version         = "1"
 
       configuration = {
         ProjectName = aws_codebuild_project.production.name
@@ -241,6 +241,11 @@ resource "aws_iam_role_policy" "codebuild" {
       "Resource": [
         "*"
       ]
+    },
+    {
+    "Effect": "Allow",
+    "Action": "sts:AssumeRole",
+    "Resource": "arn:aws:iam::899987639597:role/cross-account-pttp"
     }
   ]
 }
@@ -315,7 +320,7 @@ resource "aws_codebuild_project" "lint" {
   }
 
   source {
-    type = "CODEPIPELINE"
+    type      = "CODEPIPELINE"
     buildspec = "buildspec.lint.yml"
   }
 
