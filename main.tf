@@ -37,12 +37,12 @@ module "vpc" {
   enable_dns_support   = true
 }
 
-//module "build" {
-//  source = "./modules/pipeline"
-//  vpc_id = module.vpc.vpc_id
-//  subnet_ids = module.dynamic_subnets.public_subnet_ids
-//  github_oauth_token = var.github_oauth_token
-//}
+module "build" {
+  source = "./modules/pipeline"
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = module.dynamic_subnets.public_subnet_ids
+  github_oauth_token = var.github_oauth_token
+}
 
 //module "ecs-spike" {
 //  source = "./modules/ecs-spike"
@@ -50,11 +50,11 @@ module "vpc" {
 //  subnet_ids = module.dynamic_subnets.public_subnet_ids
 //}
 
-module "beats" {
-  source = "./modules/beats"
-  vpc_id = module.vpc.vpc_id
-  subnet_ids = module.dynamic_subnets.public_subnet_ids
-}
+# module "beats" {
+#   source = "./modules/beats"
+#   vpc_id = module.vpc.vpc_id
+#   subnet_ids = module.dynamic_subnets.public_subnet_ids
+# }
 
 //module "monitoring-platform" {
 //  source = "./modules/monitoring-platform"
